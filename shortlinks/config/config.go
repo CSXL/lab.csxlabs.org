@@ -30,6 +30,7 @@ type Authentication struct {
 type ReservedManagementEndpoints struct {
 	Login string `yaml:"login"`
 	Logout string `yaml:"logout"`
+	Dashboard string `yaml:"dashboard"`
 }
 
 type Config struct {

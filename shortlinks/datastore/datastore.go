@@ -7,6 +7,7 @@ import (
 	"cloud.google.com/go/firestore"
 	"github.com/CSXL/lab.csxlabs.org/shortlinks/config"
 	"github.com/google/uuid"
+	"google.golang.org/api/iterator"
 )
 
 var ProjectID string
@@ -39,6 +40,64 @@ func AddURL(shortURL string, destinationURL string) (string, error) {
 	}
 
 	return shortURL, nil
+}
+
+// ListURLs returns a map of short link paths to destination URLs from Firestore.
+func ListURLs() (map[string]string, error) {
+	iter := firestoreClient.Collection(CollectionName).Documents(context.Background())
+	urls := make(map[string]string)
+	for {
+		doc, err := iter.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			return nil, fmt.Errorf("failed to iterate over Firestore documents: %w", err)
+		}
+		urls[doc.Ref.ID] = doc.Data()["destination_url"].(string)
+	}
+
+	return urls, nil
+}
+
+// RemoveURL removes the short link associated with the given short link path from Firestore.
+func RemoveURL(shortURL string) error {
+	_, err := firestoreClient.Collection(CollectionName).Doc(shortURL).Delete(context.Background())
+	if err != nil {
+		return fmt.Errorf("failed to remove short link from Firestore: %w", err)
+	}
+
+	return nil
+}
+
+// EditURL updates the destination URL associated with the given short link in Firestore.
+func EditURL(shortURL string, destinationURL string, newShortURL string, newDestinationURL string) error {
+	if newShortURL == "" && newDestinationURL == "" {
+		return fmt.Errorf("no new values provided")
+	}
+	if newDestinationURL != "" {
+		_, err := firestoreClient.Collection(CollectionName).Doc(shortURL).Update(context.Background(), []firestore.Update{
+			{
+				Path:  "destination_url",
+				Value: newDestinationURL,
+			},
+		})
+		if err != nil {
+			return fmt.Errorf("failed to update destination URL in Firestore: %w", err)
+		}
+		destinationURL = newDestinationURL
+	}
+	if newShortURL != "" {
+		err := RemoveURL(shortURL)
+		if err != nil {
+			return fmt.Errorf("failed to remove old short link from Firestore: %w", err)
+		}
+		_, err = AddURL(newShortURL, destinationURL)
+		if err != nil {
+			return fmt.Errorf("failed to add new short link to Firestore: %w", err)
+		}
+	}
+	return nil
 }
 
 // GetURL fetches the destination URL associated with the given short link from Firestore.

@@ -21,8 +21,14 @@ func main() {
 		AllowedUsers: config.Authentication.AllowedUsers,
 		Authorizer: authorizer,
 	}
+	Dashboard := handlers.DashboardPage{
+		Title: config.Website.Name,
+	}
 	http.HandleFunc(config.ReservedManagementEndpoints.Login, LoginPage.Login)
+	http.HandleFunc(config.ReservedManagementEndpoints.Dashboard, VerifyJWT.VerifyJWT(Dashboard.Dashboard))
 	http.HandleFunc("/create", VerifyJWT.VerifyJWT(handlers.CreateShortLink))
+	http.HandleFunc("/delete", VerifyJWT.VerifyJWT(handlers.RemoveShortLink))
+	http.HandleFunc("/edit", VerifyJWT.VerifyJWT(handlers.EditShortLink))
 	http.HandleFunc("/", handlers.RedirectToDestinationURL)
 
 	fmt.Println("Short links server started on :8080")
