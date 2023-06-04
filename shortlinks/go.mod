@@ -4,7 +4,9 @@ go 1.20
 
 require (
 	cloud.google.com/go/firestore v1.10.0
+	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/google/uuid v1.3.0
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
