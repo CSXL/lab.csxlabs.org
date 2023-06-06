@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/CSXL/lab.csxlabs.org/shortlinks/auth"
 	"github.com/CSXL/lab.csxlabs.org/shortlinks/config"
@@ -33,6 +34,12 @@ func main() {
 	http.HandleFunc("/edit", VerifyJWT.VerifyJWT(handlers.EditShortLink))
 	http.HandleFunc("/", handlers.RedirectToDestinationURL)
 
-	fmt.Println("Short links server started on :8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	// PORT environment variable is provided by Cloud Run.
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	fmt.Println("Short links server started on :"+port)
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
