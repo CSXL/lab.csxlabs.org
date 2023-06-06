@@ -14,12 +14,14 @@ func main() {
 	config := config.LoadConfig()
 	authorizer := auth.NewAuthorizer(config.Authentication.SigningKey)
 	VerifyJWT := handlers.VerifyJWT{
-		Authorizer: authorizer,
+		Authorizer:                  authorizer,
+		ReservedManagementEndpoints: config.ReservedManagementEndpoints,
 	}
 	LoginPage := handlers.LoginPage{
-		Title: config.Website.Name,
+		Title:        config.Website.Name,
 		AllowedUsers: config.Authentication.AllowedUsers,
-		Authorizer: authorizer,
+		Authorizer:   authorizer,
+		DashboardURL: config.ReservedManagementEndpoints.Dashboard,
 	}
 	Dashboard := handlers.DashboardPage{
 		Title: config.Website.Name,

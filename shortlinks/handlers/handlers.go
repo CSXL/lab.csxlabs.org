@@ -11,7 +11,8 @@ import (
 )
 
 type VerifyJWT struct {
-	Authorizer *auth.Authorizer
+	Authorizer                  *auth.Authorizer
+	ReservedManagementEndpoints config.ReservedManagementEndpoints
 }
 
 func (v VerifyJWT) VerifyJWT(endpointHandler http.HandlerFunc) http.HandlerFunc {
@@ -20,7 +21,7 @@ func (v VerifyJWT) VerifyJWT(endpointHandler http.HandlerFunc) http.HandlerFunc 
 		cookie, err := r.Cookie("token")
 		if err != nil {
 			if err == http.ErrNoCookie {
-				http.Error(w, "No token provided", http.StatusUnauthorized)
+				http.Redirect(w, r, v.ReservedManagementEndpoints.Login, http.StatusFound)
 				return
 			}
 			http.Error(w, "Failed to get token from cookie", http.StatusBadRequest)
@@ -42,9 +43,10 @@ func (v VerifyJWT) VerifyJWT(endpointHandler http.HandlerFunc) http.HandlerFunc 
 }
 
 type LoginPage struct {
-	Title string
+	Title        string
 	AllowedUsers []config.AllowedUser
-	Authorizer *auth.Authorizer
+	Authorizer   *auth.Authorizer
+	DashboardURL string
 }
 
 // Login handles the login request.
@@ -70,14 +72,14 @@ func (p LoginPage) Login(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			w.Header().Set("Set-Cookie", "token="+token+"; Path=/; HttpOnly")
-			http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+			http.Redirect(w, r, p.DashboardURL, http.StatusSeeOther)
 		}
 	}
 	http.Error(w, "Access denied", http.StatusForbidden)
 }
 
 type DashboardPage struct {
-	Title string
+	Title      string
 	ShortLinks map[string]string
 }
 
