@@ -1,0 +1,25 @@
+# Site Information
+website:
+  name: Shortlinks
+  company: ACME Laboratories
+
+# Firestore Database
+firestore:
+  project_id: YOUR PROJECT ID
+  collection_name: YOUR COLLECTION NAME
+
+# Authentication Configuration
+authentication:
+  signing_key: YOUR SIGNING KEY
+  signing_domain: www.example.com
+  session_timeout_seconds: 7200
+  allowed_users:
+    - username: user1
+      password: password1
+    - username: user2
+      password: password2
+# Reserved Management Endpoints
+reserved_management_endpoints:
+  login: /internal/login"
+  logout: /internal/logout"
+  dashboard: /internal/dashboard

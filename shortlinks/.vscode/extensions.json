@@ -1,5 +1,3 @@
 {
-    "recommendations": [
-        "googlecloudtools.cloudcode"
-    ] 
+  "recommendations": ["googlecloudtools.cloudcode"]
 }

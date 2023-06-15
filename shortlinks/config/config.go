@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"gopkg.in/yaml.v3"
+	yaml "gopkg.in/yaml.v3"
 )
 
 type Website struct {
@@ -17,26 +17,26 @@ type AllowedUser struct {
 }
 
 type Firestore struct {
-	ProjectID string `yaml:"project_id"`
+	ProjectID      string `yaml:"project_id"`
 	CollectionName string `yaml:"collection_name"`
 }
 
 type Authentication struct {
-	SigningKey string `yaml:"signing_key"`
-	SigningDomain string `yaml:"signing_domain"`
-	AllowedUsers []AllowedUser `yaml:"allowed_users"`
+	SigningKey    string        `yaml:"signing_key"`
+	SigningDomain string        `yaml:"signing_domain"`
+	AllowedUsers  []AllowedUser `yaml:"allowed_users"`
 }
 
 type ReservedManagementEndpoints struct {
-	Login string `yaml:"login"`
-	Logout string `yaml:"logout"`
+	Login     string `yaml:"login"`
+	Logout    string `yaml:"logout"`
 	Dashboard string `yaml:"dashboard"`
 }
 
 type Config struct {
-	Website Website `yaml:"website"`
-	Authentication Authentication `yaml:"authentication"`
-	Firestore Firestore `yaml:"firestore"`
+	Website                     Website                     `yaml:"website"`
+	Authentication              Authentication              `yaml:"authentication"`
+	Firestore                   Firestore                   `yaml:"firestore"`
 	ReservedManagementEndpoints ReservedManagementEndpoints `yaml:"reserved_management_endpoints"`
 }
 

@@ -40,6 +40,6 @@ func main() {
 		port = "8080"
 	}
 
-	fmt.Println("Short links server started on :"+port)
+	fmt.Println("Short links server started on :" + port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }

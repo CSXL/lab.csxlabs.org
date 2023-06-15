@@ -1,7 +1,7 @@
 # Use base golang image from Docker Hub
 FROM golang:1.19 AS build
 
-WORKDIR /hello-world
+WORKDIR /app
 
 # Install dependencies in go.mod and go.sum
 COPY go.mod go.sum ./
@@ -13,8 +13,8 @@ COPY . ./
 # Compile the application to /app.
 # Skaffold passes in debug-oriented compiler flags
 ARG SKAFFOLD_GO_GCFLAGS
-RUN echo "Go gcflags: ${SKAFFOLD_GO_GCFLAGS}"
-RUN go build -gcflags="${SKAFFOLD_GO_GCFLAGS}" -mod=readonly -v -o /app
+RUN echo "Go gcflags: ${SKAFFOLD_GO_GCFLAGS}" \
+    go build -gcflags="${SKAFFOLD_GO_GCFLAGS}" -mod=readonly -v -o /app
 
 # Now create separate deployment image
 FROM gcr.io/distroless/base

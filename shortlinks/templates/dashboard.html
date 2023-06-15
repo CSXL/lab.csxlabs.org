@@ -1,39 +1,63 @@
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{.Title}}</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Dashboard</h1>
     {{ range $shortlink, $destinationURL := .ShortLinks }}
-        <p><a href="/{{$shortlink}}">{{$shortlink}}</a> -> {{$destinationURL}}</p>
-        <br />
-        <form action="/edit" method="post">
-            <input type="hidden" name="shortlink" value="{{$shortlink}}" />
-            <label for="newShortlink">New Shortlink</label>
-            <input type="text" name="newShortlink" id="newShortlink" placeholder="New Shortlink" required />
-            <br />
-            <label for="newDestinationURL">New Destination URL</label>
-            <input type="url" name="newDestinationURL" id="newDestinationURL" placeholder="New Destination URL" required />
-            <br />
-            <input type="submit" value="Edit" />
-        </form>
-        <form action="/delete" method="post">
-            <input type="hidden" name="shortlink" value="{{$shortlink}}" />
-            <input type="submit" value="Delete" />
-        </form>
+    <p><a href="/{{$shortlink}}">{{$shortlink}}</a> -> {{$destinationURL}}</p>
+    <br />
+    <form action="/edit" method="post">
+      <input type="hidden" name="shortlink" value="{{$shortlink}}" />
+      <label for="newShortlink">New Shortlink</label>
+      <input
+        type="text"
+        name="newShortlink"
+        id="newShortlink"
+        placeholder="New Shortlink"
+        required
+      />
+      <br />
+      <label for="newDestinationURL">New Destination URL</label>
+      <input
+        type="url"
+        name="newDestinationURL"
+        id="newDestinationURL"
+        placeholder="New Destination URL"
+        required
+      />
+      <br />
+      <input type="submit" value="Edit" />
+    </form>
+    <form action="/delete" method="post">
+      <input type="hidden" name="shortlink" value="{{$shortlink}}" />
+      <input type="submit" value="Delete" />
+    </form>
     {{ end }}
     <br />
     <form action="/create" method="post">
-        <label for="shortlink">Shortlink</label>
-        <input type="text" name="shortlink" id="shortlink" placeholder="Shortlink" required />
-        <br />
-        <label for="destinationURL">URL</label>
-        <input type="url" name="destinationURL" id="destinationURL" placeholder="Destination URL" required />
-        <br />
-        <input type="submit" value="Create" />
+      <label for="shortlink">Shortlink</label>
+      <input
+        type="text"
+        name="shortlink"
+        id="shortlink"
+        placeholder="Shortlink"
+        required
+      />
+      <br />
+      <label for="destinationURL">URL</label>
+      <input
+        type="url"
+        name="destinationURL"
+        id="destinationURL"
+        placeholder="Destination URL"
+        required
+      />
+      <br />
+      <input type="submit" value="Create" />
     </form>
-</body>
+  </body>
 </html>
