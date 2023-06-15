@@ -107,7 +107,7 @@ func CreateShortLink(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	shortlink := r.Form.Get("shortlink")
-	destinationURL := r.Form.Get("destination_url")
+	destinationURL := r.Form.Get("destinationURL")
 	returnedShortURL, err := datastore.AddURL(shortlink, destinationURL)
 	if err != nil {
 		http.Error(w, "Failed to create short link", http.StatusInternalServerError)
