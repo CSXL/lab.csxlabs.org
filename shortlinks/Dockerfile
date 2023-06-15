@@ -1,5 +1,5 @@
 # Use base golang image from Docker Hub
-FROM golang:1.19 AS build
+FROM golang:1.20 AS build
 
 WORKDIR /app
 
@@ -23,6 +23,7 @@ FROM gcr.io/distroless/base
 # Default behavior - a failure prints a stack trace for the current goroutine.
 # See https://golang.org/pkg/runtime/
 ENV GOTRACEBACK=single
+ENV PORT=8080
 
 # Copy template & assets
 WORKDIR /shortlinks
